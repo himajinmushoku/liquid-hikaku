@@ -135,6 +135,32 @@ def get_data_madoromi():
         url = item.find('a')['href']
         data_madoromi['URL'] = url
         data_ec.append(data_madoromi)
+        
+###AncientCBD#####
+def get_data_ancient():
+    url = 'https://kajitsumanbo.thebase.in/categories/4038882'
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, 'html.parser')
+    items = soup.find_all('li', {'class': 'items-grid_itemListLI_5a0255a1'})
+
+    for item in items:
+        data_ancientCBD = {}
+        data_ancientCBD['title'] = item.find('p', {'class': 'items-grid_itemTitleText_5a0255a1'}).text
+        data_ancientCBD['URL'] = item.find('a')['href']
+        price = item.find('p', {'class': 'items-grid_price_5a0255a1'}).text
+        price = price.replace('¥', '').replace(',', '')
+        price = int(price)
+        data_ancientCBD['price'] = price
+        title = item.find('p', {'class': 'items-grid_itemTitleText_5a0255a1'}).text
+        if '1ml' in title:
+            data_ancientCBD['capacity'] = '1ml'
+        elif '0.5ml' in title:
+            data_ancientCBD['capacity'] = '0.5ml'
+        else:
+            data_ancientCBD['capacity'] = '不明'
+        stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
+        data_ancientCBD['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+    
 
 def get_df_ec():
     get_data_SLC()
