@@ -24,6 +24,13 @@ def get_data_SLC():
             data_SLC['capacity'] = '0.5ml'
         else:
             data_SLC['capacity'] = '不明'
+        
+        if data_SLC['capacity'] == '1ml':
+            data_SLC['0.1mlあたりの値段'] = price / 10
+        elif data_SLC['capacity'] == '0,5ml':
+            data_SLC['0.1mlあたりの値段'] = price / 5
+        else:
+            data_SLC['0.1mlあたりの値段'] = '不明'
         stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
         data_SLC['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
         data_SLC['URL'] = item.find('a', {'class': 'items-grid_anchor_5a0255a1 js-anchor'})['href']
@@ -171,8 +178,6 @@ def get_df_ec():
     get_data_ancient()
     df_ec = pd.DataFrame(data_ec)
     return df_ec
-
-    
 
 
 df_ec = get_df_ec()
