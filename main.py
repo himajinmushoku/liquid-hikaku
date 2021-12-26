@@ -26,9 +26,9 @@ def get_data_SLC():
             data_SLC['capacity'] = '不明'
         
         if data_SLC['capacity'] == '1ml':
-            data_SLC['0.1mlあたりの値段'] = price / 10
+            data_SLC['0.1mlあたりの値段'] = int(price / 10)
         elif data_SLC['capacity'] == '0,5ml':
-            data_SLC['0.1mlあたりの値段'] = price / 5
+            data_SLC['0.1mlあたりの値段'] = int(price / 5)
         else:
             data_SLC['0.1mlあたりの値段'] = '不明'
         stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
