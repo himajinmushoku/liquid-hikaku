@@ -168,6 +168,7 @@ def get_df_ec():
     get_data_city420()
     get_data_macaroniCBD()
     get_data_madoromi()
+    get_data_ancient()
     df_ec = pd.DataFrame(data_ec)
     return df_ec
 
