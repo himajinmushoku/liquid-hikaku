@@ -160,6 +160,7 @@ def get_data_ancient():
             data_ancientCBD['capacity'] = '不明'
         stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
         data_ancientCBD['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+        data_ec.append(data_ancientCBD)
     
 
 def get_df_ec():
