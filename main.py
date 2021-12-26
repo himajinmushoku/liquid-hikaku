@@ -61,7 +61,7 @@ def get_data_city420():
         else:
             data_city420['capacity'] = '不明'
 
-        if data_city420C['capacity'] == '1ml':
+        if data_city420['capacity'] == '1ml':
             data_city420['0.1mlあたりの値段'] = int(price / 10)
         elif data_city420['capacity'] == '0,5ml':
             data_city420['0.1mlあたりの値段'] = int(price / 5)
