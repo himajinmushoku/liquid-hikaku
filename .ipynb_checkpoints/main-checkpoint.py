@@ -4,9 +4,8 @@ import streamlit as st
 import pandas as pd
 data_ec = []
 
-def make_clickable(val):
-    return '<a href="{}" target="_blank">{}</a>'.format(val,val)
-
+# def make_clickable(val):
+#     return '<a href="{}" target="_blank">{}</a>'.format(val,val)
 
 ###SLC###
 def get_data_SLC():
@@ -252,6 +251,36 @@ def get_data_jomon():
         data_jomon['URL'] = item.find('a')['href']   
         data_ec.append(data_jomon)
         
+def get_data_aochill():
+    url = 'https://aochill.base.shop/'
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, 'html.parser')
+    items = soup.find_all('li', {'class': 'items-grid_itemListLI_5a0255a1'})
+    for item in items:
+        data_aochill = {}
+        title = item.find('p', {'class': 'items-grid_itemTitleText_5a0255a1'}).text
+        data_aochill['title'] = title
+        price = item.find('p', {'class': 'items-grid_price_5a0255a1'}).text
+        price = price.replace('¥', '').replace(',', '')
+        price = int(price)
+        data_aochill['price'] = price
+        if '1ml' in title:
+            data_aochill['capacity'] = '1ml'
+        elif '0.5ml' in title:
+            data_aochill['capacity'] = '0.5ml'
+        else:
+            data_aochill['capacity'] = '不明'
+        stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
+        data_aochill['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+
+        if data_aochill['capacity'] == '1ml':
+            data_aochill['0.1mlあたりの値段'] = price / 10
+        elif data_aochill['capacity'] == '0.5ml':
+            data_aochill['0.1mlあたりの値段'] = price / 5
+        else:
+            data_aochill['0.1mlあたりの値段'] = 0
+        data_aochill['URL'] = item.find('a')['href']
+        data_ec.append(data_aochill)
 
 
 def get_df_ec():
@@ -264,9 +293,10 @@ def get_df_ec():
     df_ec = pd.DataFrame(data_ec)
     return df_ec
 
+
+
 df_ec = get_df_ec()  
 
-df_ec.style.format(formatter={'URL': make_clickable})
 
 
 st.title('CBDリキッド比較')
@@ -289,6 +319,7 @@ else:
     df_ec
         
         
+
 
 
 # st.write('CBDリキッド在庫情報', df_ec)
