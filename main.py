@@ -215,7 +215,38 @@ def get_data_ancient():
         
         data_ancientCBD['URL'] = item.find('a')['href']
         data_ec.append(data_ancientCBD)
-    
+
+def get_data_jomon():
+    url = 'https://www.jomon.work/'
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, 'html.parser')
+    items = soup.find_all('li', {'class': 'items-grid_itemListLI_5a0255a1'})
+
+    for item in items:
+        data_jomon = {}
+        title = item.find('p', {'class': 'items-grid_itemTitleText_5a0255a1'}).text
+        data_jomon['title'] = title
+        price = item.find('p', {'class': 'items-grid_price_5a0255a1'}).text
+        price = price.replace('¥', '').replace(',', '')
+        price = int(price)
+        data_jomon['price'] = price
+        if '1ml' in title:
+            data_jomon['capacity'] = '1ml'
+        elif '0.5ml' in title:
+            data_jomon['capacity'] = '0.5ml'
+        else:
+            data_jomon['capacity'] = '不明'
+        stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
+        data_jomon['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+
+        if data_jomon['capacity'] == '1ml':
+            data_jomon['0.1mlあたりの値段'] = price / 10
+        elif data_jomon['capacity'] == '0.5ml':
+            data_jomon['0.1mlあたりの値段'] = price / 5
+        else:
+            data_jomon['0.1mlあたりの値段'] = 0
+        data_jomon['url'] = item.find('a')['href']   
+        data_ec.append(data_jomon)
 
 def get_df_ec():
     get_data_SLC()
@@ -223,6 +254,7 @@ def get_df_ec():
     get_data_macaroniCBD()
     get_data_madoromi()
     get_data_ancient()
+    get_data_jomon()
     df_ec = pd.DataFrame(data_ec)
     return df_ec
 
