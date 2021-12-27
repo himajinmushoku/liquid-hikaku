@@ -245,7 +245,7 @@ def get_data_jomon():
             data_jomon['0.1mlあたりの値段'] = price / 5
         else:
             data_jomon['0.1mlあたりの値段'] = 0
-        data_jomon['url'] = item.find('a')['href']   
+        data_jomon['URL'] = item.find('a')['href']   
         data_ec.append(data_jomon)
 
 def get_df_ec():
