@@ -4,6 +4,10 @@ import streamlit as st
 import pandas as pd
 data_ec = []
 
+def make_clickable(val):
+    return '<a href="{}" target="_blank">{}</a>'.format(val,val)
+
+
 ###SLC###
 def get_data_SLC():
     url = 'https://slcbd.thebase.in/categories/3788862'
@@ -247,6 +251,8 @@ def get_data_jomon():
             data_jomon['0.1mlあたりの値段'] = 0
         data_jomon['URL'] = item.find('a')['href']   
         data_ec.append(data_jomon)
+        
+
 
 def get_df_ec():
     get_data_SLC()
@@ -258,8 +264,10 @@ def get_df_ec():
     df_ec = pd.DataFrame(data_ec)
     return df_ec
 
+df_ec = get_df_ec()  
 
-df_ec = get_df_ec()    
+df_ec.style.format(formatter={'URL': make_clickable})
+
 
 st.title('CBDリキッド比較')
     
