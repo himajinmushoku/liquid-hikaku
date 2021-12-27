@@ -27,6 +27,14 @@ def get_data_SLC():
         
         stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
         data_SLC['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+        
+        if data_SLC['capacity'] == '1ml':
+            data_SLC['0.1mlあたりの値段'] = price / 10
+        elif data_SLC['capacity'] == '0.5ml':
+            data_SLC['0.1mlあたりの値段'] = price / 5
+        else:
+            data_SLC['0.1mlあたりの値段'] = 0
+        
         data_SLC['URL'] = item.find('a', {'class': 'items-grid_anchor_5a0255a1 js-anchor'})['href']
         data_ec.append(data_SLC)
 
@@ -47,7 +55,8 @@ def get_data_city420():
         title = item.find('h2', {'class': 'show_on_hover'}).text
         title = ''.join(title.split())
         data_city420['title'] = title
-        data_city420['price'] = int(item.find('div', {'class': 'price'}).text.replace('¥', '').replace(',', ''))
+        price = int(item.find('div', {'class': 'price'}).text.replace('¥', '').replace(',', ''))
+        data_city420['price'] = price
         if '1ml' in title:
             data_city420['capacity'] = '1ml'
         elif '0.5ml' in title:
@@ -57,6 +66,14 @@ def get_data_city420():
 
         stock = item.find('p', {'class': 'endOfSale'}) == None
         data_city420['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+        
+        if data_city420['capacity'] == '1ml':
+            data_city420['0.1mlあたりの値段'] = price / 10
+        elif data_city420['capacity'] == '0.5ml':
+            data_city420['0.1mlあたりの値段'] = price / 5
+        else:
+            data_city420['0.1mlあたりの値段'] = 0
+        
         data_city420['URL'] = item.find('a')['href']
         data_ec.append(data_city420)
     
@@ -87,6 +104,14 @@ def get_data_macaroniCBD():
 
         stock = item.find('span', {'class': 'c-card__tag endOfSale'}) == None
         data_macaroni['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+        
+        if data_macaroni['capacity'] == '1ml':
+            data_macaroni['0.1mlあたりの値段'] = price / 10
+        elif data_macaroni['capacity'] == '0.5ml':
+            data_macaroni['0.1mlあたりの値段'] = price / 5
+        else:
+            data_macaroni['0.1mlあたりの値段'] = 0
+        
         data_macaroni['URL'] = item.get('href')
         data_ec.append(data_macaroni)
 
@@ -115,6 +140,14 @@ def get_data_macaroniCBD():
 
         stock = item.find('span', {'class': 'c-card__tag endOfSale'}) == None
         data_macaroni['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+                
+        if data_macaroni['capacity'] == '1ml':
+            data_macaroni['0.1mlあたりの値段'] = price / 10
+        elif data_macaroni['capacity'] == '0.5ml':
+            data_macaroni['0.1mlあたりの値段'] = price / 5
+        else:
+            data_macaroni['0.1mlあたりの値段'] = 0
+            
         data_macaroni['URL'] = item.get('href')
         data_ec.append(data_macaroni)
         
@@ -134,15 +167,16 @@ def get_data_madoromi():
         price = int(price)
         data_madoromi['price'] = price
         data_madoromi['capacity'] = '不明'
-
-        if data_madoromi['capacity'] == '1ml':
-            data_madoromi['0.1mlあたりの値段'] = int(price / 10)
-        elif data_madoromi['capacity'] == '0.5ml':
-            data_madoromi['0.1mlあたりの値段'] = int(price / 5)
-        else:
-            data_madoromi['0.1mlあたりの値段'] = '不明'
         stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
         data_madoromi['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+        
+        if data_madoromi['capacity'] == '1ml':
+            data_madoromi['0.1mlあたりの値段'] = price / 10
+        elif data_madoromi['capacity'] == '0.5ml':
+            data_madoromi['0.1mlあたりの値段'] = price / 5
+        else:
+            data_madoromi['0.1mlあたりの値段'] = 0
+        
         url = item.find('a')['href']
         data_madoromi['URL'] = url
         data_ec.append(data_madoromi)
@@ -157,7 +191,6 @@ def get_data_ancient():
     for item in items:
         data_ancientCBD = {}
         data_ancientCBD['title'] = item.find('p', {'class': 'items-grid_itemTitleText_5a0255a1'}).text
-        data_ancientCBD['URL'] = item.find('a')['href']
         price = item.find('p', {'class': 'items-grid_price_5a0255a1'}).text
         price = price.replace('¥', '').replace(',', '')
         price = int(price)
@@ -170,9 +203,17 @@ def get_data_ancient():
         else:
             data_ancientCBD['capacity'] = '不明'
 
-
         stock = item.find('p', {'class': 'items-grid_soldOut_5a0255a1'}) == None
         data_ancientCBD['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+        
+        if data_ancientCBD['capacity'] == '1ml':
+            data_ancientCBD['0.1mlあたりの値段'] = price / 10
+        elif data_ancientCBD['capacity'] == '0.5ml':
+            data_ancientCBD['0.1mlあたりの値段'] = price / 5
+        else:
+            data_ancientCBD['0.1mlあたりの値段'] = 0
+        
+        data_ancientCBD['URL'] = item.find('a')['href']
         data_ec.append(data_ancientCBD)
     
 
@@ -186,9 +227,29 @@ def get_df_ec():
     return df_ec
 
 
-df_ec = get_df_ec()
+df_ec = get_df_ec()    
 
 st.title('CBDリキッド比較')
+    
+liquid = st.radio(
+     "欲しいリキッドは何ですか？",
+     ('すべて', 'HHC', 'CBN', 'CBG', 'CBD'))
 
-st.write('CBDリキッド在庫情報', df_ec)
+if liquid == 'すべて':
+    df_ec
+elif liquid == 'HHC':
+    df_ec[df_ec['title'].str.contains('HHC')]
+elif liquid == 'CBN':
+    df_ec[df_ec['title'].str.contains('CBN')]
+elif liquid == 'CBG':
+    df_ec[df_ec['title'].str.contains('CBG')]
+elif liquid == 'CBD':
+    df_ec[df_ec['title'].str.contains('CBD')]
+else:
+    df_ec
+        
+        
+
+
+# st.write('CBDリキッド在庫情報', df_ec)
 
