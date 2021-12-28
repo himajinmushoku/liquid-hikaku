@@ -2,6 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import streamlit as st
 import pandas as pd
+import time
 data_ec = []
 
 # def make_clickable(val):
@@ -283,6 +284,7 @@ def get_data_aochill():
         data_ec.append(data_aochill)
 
 
+        
 def get_df_ec():
     get_data_SLC()
     get_data_city420()
@@ -290,6 +292,7 @@ def get_df_ec():
     get_data_madoromi()
     get_data_ancient()
     get_data_jomon()
+    get_data_aochill()
     df_ec = pd.DataFrame(data_ec)
     return df_ec
 
@@ -300,6 +303,16 @@ df_ec = get_df_ec()
 
 
 st.title('CBDリキッド比較')
+
+latest_iteration = st.empty()
+bar = st.progress(0)
+    
+for i in range(100):
+    latest_iteration.text(f'進行状況 {i+1}')
+    bar.progress(i + 1)
+    time.sleep(0.005)       
+
+    
     
 liquid = st.radio(
      "欲しいリキッドは何ですか？",
@@ -317,7 +330,6 @@ elif liquid == 'CBD':
     df_ec[df_ec['title'].str.contains('CBD')]
 else:
     df_ec
-        
         
 
 
