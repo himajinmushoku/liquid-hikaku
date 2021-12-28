@@ -2,7 +2,7 @@ from bs4 import BeautifulSoup
 import requests
 import streamlit as st
 import pandas as pd
-# import time
+import time
 data_ec = []
 
 # def make_clickable(val):
