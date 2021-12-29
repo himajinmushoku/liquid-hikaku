@@ -294,12 +294,6 @@ def get_df_ec():
     df_ec = pd.DataFrame(data_ec)
     return df_ec
 
-
-
-df_ec = get_df_ec()  
-
-
-
 st.title('CBDリキッド比較')
 
 latest_iteration = st.empty()
@@ -308,7 +302,13 @@ bar = st.progress(0)
 for i in range(100):
     latest_iteration.text(f'進行状況 {i+1}')
     bar.progress(i + 1)
-    time.sleep(0.01)  
+    time.sleep(0.005)  
+
+df_ec = get_df_ec()  
+
+
+
+
     
     
 liquid = st.radio(
