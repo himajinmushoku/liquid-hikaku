@@ -281,10 +281,8 @@ def get_data_aochill():
         else:
             data_aochill['0.1mlあたりの値段'] = 0
         data_aochill['URL'] = item.find('a')['href']
-        data_ec.append(data_aochill)
+        data_ec.append(data_aochill)        
 
-
-        
 def get_df_ec():
     get_data_SLC()
     get_data_city420()
