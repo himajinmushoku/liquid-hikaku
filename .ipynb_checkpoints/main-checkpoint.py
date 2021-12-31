@@ -315,6 +315,7 @@ def get_data_gray():
         else:
             data_gray['0.1mlあたりの値段'] = 0
         data_gray['URL'] = item.find('a')['href']
+        df_ec.append(data_gray)
 
 def get_df_ec():
     get_data_SLC()
@@ -324,6 +325,7 @@ def get_df_ec():
     get_data_ancient()
     get_data_jomon()
     get_data_aochill()
+    get_data_gray()
     df_ec = pd.DataFrame(data_ec)
     return df_ec
 
