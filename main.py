@@ -281,7 +281,40 @@ def get_data_aochill():
         else:
             data_aochill['0.1mlあたりの値段'] = 0
         data_aochill['URL'] = item.find('a')['href']
-        data_ec.append(data_aochill)        
+        data_ec.append(data_aochill)      
+        
+def get_data_gray():
+    url = 'https://www.graycannabis.jp/categories/3788391'
+    res = requests.get(url)
+    soup = BeautifulSoup(res.text, 'html.parser')
+    items = soup.find_all('div', {'class': 'bs_itemResult__part'})
+
+    for item in items:
+        data_gray = {}
+        title = item.find('div', {'class': 'bs_itemCard__title'}).text
+        data_gray['title'] = title
+        price = item.find('div', {'class': 'bs_itemCard__price'}).text
+        price = price.replace('¥', '').replace(',', '')
+        price = int(price)
+        data_gray['price'] = price
+
+
+        if '1mL' in title:
+            data_gray['capacity'] = '1ml'
+        elif '0.5mL' in title:
+            data_gray['capacity'] = '0.5ml'
+        else:
+            data_gray['capacity'] = '不明'
+        stock = item.find('span', {'class': 'bs_itemCard__soldout'}) == None
+        data_gray['stock'] = '在庫あり' if stock == True else 'SOLD OUT'
+
+        if data_gray['capacity'] == '1ml':
+            data_gray['0.1mlあたりの値段'] = price / 10
+        elif data_gray['capacity'] == '0.5ml':
+            data_gray['0.1mlあたりの値段'] = price / 5
+        else:
+            data_gray['0.1mlあたりの値段'] = 0
+        data_gray['URL'] = item.find('a')['href']
 
 def get_df_ec():
     get_data_SLC()
