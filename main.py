@@ -166,7 +166,7 @@ def get_data_madoromi():
     for item in items:
         data_madoromi = {}
         data_madoromi['title'] = item.find('p', {'class': 'items-grid_itemTitleText_5a0255a1'}).text
-        price = item.find('div', {'class': 'items-grid_itemPrice_5a0255a1'}).text
+        price = item.find('p', {'class': 'items-grid_price_5a0255a1'}).text
         price = price.replace('¥', '').replace(',', '')
         price = int(price)
         data_madoromi['price'] = price
